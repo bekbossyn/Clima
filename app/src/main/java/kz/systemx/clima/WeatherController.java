@@ -1,8 +1,13 @@
 package kz.systemx.clima;
 
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,7 +25,8 @@ public class WeatherController extends AppCompatActivity {
     final float MIN_DISTANCE = 1000;
 
     // TODO: Set LOCATION_PROVIDER here:
-
+    String LOCATION_PROVIDER = LocationManager.GPS_PROVIDER;// FINE_LOCATION PERMISSION for emulatior, precise location
+//  String LOCATION_PROVIDER = LocationManager.NETWORK_PROVIDER; COARSE_LOCATION PERMISSION // for device, not precise but wifi location
 
 
 
@@ -30,7 +36,8 @@ public class WeatherController extends AppCompatActivity {
     TextView mTemperatureLabel;
 
     // TODO: Declare a LocationManager and a LocationListener here:
-
+    LocationManager mLocationManager;
+    LocationListener mLocationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,13 @@ public class WeatherController extends AppCompatActivity {
 
 
     // TODO: Add onResume() here:
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("Clima", "onResume() called");
+        Log.d("Clima", "Getting weather for current location");
+        getWeatherForCurrentLocation();
+    }
 
 
     // TODO: Add getWeatherForNewCity(String city) here:
@@ -59,7 +72,32 @@ public class WeatherController extends AppCompatActivity {
 
 
     // TODO: Add getWeatherForCurrentLocation() here:
+    private void getWeatherForCurrentLocation(){
 
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.d("Clima", "Location has changed() callback received");
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+    }
 
 
     // TODO: Add letsDoSomeNetworking(RequestParams params) here:
